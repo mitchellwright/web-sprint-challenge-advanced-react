@@ -17,7 +17,6 @@ export default class PlantList extends Component {
     axios
       .get("http://localhost:3333/plants")
       .then((res) => {
-        console.log(res.data.plantsData);
         this.setState({
           plants: res.data.plantsData,
           allPlants: res.data.plantsData,
@@ -27,8 +26,7 @@ export default class PlantList extends Component {
   }
 
   changeHandler = (e) => {
-    console.log(e.target.value);
-    // search in this.state.plants for plants that match the search box
+    // search in this.state.allPlants for plants that match the search box
     const matchingPlants = this.state.allPlants.filter((plant) =>
       plant.name.toLowerCase().includes(e.target.value.toLowerCase())
     );

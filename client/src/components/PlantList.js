@@ -7,6 +7,7 @@ export default class PlantList extends Component {
     super();
     this.state = {
       plants: [],
+      allPlants: [],
     };
   }
   // when the component mounts:
@@ -17,14 +18,32 @@ export default class PlantList extends Component {
       .get("http://localhost:3333/plants")
       .then((res) => {
         console.log(res.data.plantsData);
-        this.setState({ plants: res.data.plantsData });
+        this.setState({
+          plants: res.data.plantsData,
+          allPlants: res.data.plantsData,
+        });
       })
       .catch((err) => console.error(err));
   }
+
+  changeHandler = (e) => {
+    console.log(e.target.value);
+    // search in this.state.plants for plants that match the search box
+    const matchingPlants = this.state.allPlants.filter((plant) =>
+      plant.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+
+    // set state to only have the plants in the search box
+    this.setState({ plants: matchingPlants });
+  };
   /*********  DON'T CHANGE ANYTHING IN THE RENDER FUNCTION *********/
   render() {
     return (
       <main className="plant-list">
+        <input
+          placeholder="Search for plants..."
+          onChange={this.changeHandler}
+        ></input>
         {this.state?.plants?.map((plant) => (
           <div className="plant-card" key={plant.id}>
             <img className="plant-image" src={plant.img} alt={plant.name} />
